@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple String Operations</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            color: #0078D7;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px 5px 20px;
+            background-color: #0078D7;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+        input {
+            padding: 10px;
+            margin: 5px 0;
+            width: calc(100% - 22px);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        #results pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Multiple String Operations</h2>
+        <input type="text" id="input" placeholder="Enter your input here">
+        <button onclick="findTenthCharacter()">Task 1: Find 10th Character</button>
+        <button onclick="findLastElement()">Task 2: Find Last Element</button>
+        <button onclick="promptDigits()">Task 3: Allow Only 10 Digits</button>
+        <button onclick="findWordsAndRepeatedChars()">Task 4: Find Words & Repeated Chars</button>
+        <button onclick="findNumberOfVowels()">Task 5: Number of Vowels</button>
+        <button onclick="findLongestWord()">Task 6: Longest Word</button>
+        <button onclick="toggleCase()">Task 7: Toggle Case</button>
+        <button onclick="findWordLocation()">Task 8: Find Word Location</button>
+        <button onclick="spliceOperations()">Task 9: Splice Operations</button>
+        <button onclick="analyzeString()">Task 10: Analyze String</button>
+        <h3>Results:</h3>
+        <div id="results"><pre id="result-text"></pre></div>
+    </div>
+
+    <script>
+        function displayResult(result) {
+            document.getElementById('result-text').innerText = result;
+        }
+
+        function findTenthCharacter() {
+            const input = document.getElementById('input').value;
+            if (input) {
+                const array = input.split(',');
+                const result = array.length >= 10 ? `The 10th character is: ${array[9]}` : "The array has less than 10 characters.";
+                displayResult(result);
+            } else {
+                displayResult("No array entered.");
+            }
+        }
+
+        function findLastElement() {
+            const input = document.getElementById('input').value;
+            if (input) {
+                const array = input.split(',');
+                const result = array.length > 0 ? `The last element is: ${array[array.length - 1]}` : "The array is empty.";
+                displayResult(result);
+            } else {
+                displayResult("No array entered.");
+            }
+        }
+
+        function promptDigits() {
+            const input = document.getElementById('input').value;
+            const result = /^\d{10}$/.test(input) ? `Entered digits: ${input}` : "Enter exactly 10 digits.";
+            displayResult(result);
+        }
+
+        function findWordsAndRepeatedChars() {
+            const inputArray = document.getElementById('input').value;
+            const wordToFind = prompt("Enter the word to find in the array:");
+            if (inputArray && wordToFind) {
+                const array = inputArray.split(',');
+                const foundWords = array.filter(word => word.includes(wordToFind));
+                const repeatedChars = findRepeatedCharacters(wordToFind);
+
+                displayResult(`Words containing "${wordToFind}": ${foundWords.join(', ')}\nRepeated characters in "${wordToFind}": ${repeatedChars}`);
+            } else {
+                displayResult("No valid input entered.");
+            }
+        }
+
+        function findRepeatedCharacters(word) {
+            const charCount = {};
+            for (const char of word) {
+                charCount[char] = (charCount[char] || 0) + 1;
+            }
+
+            return Object.entries(charCount)
+                .filter(([char, count]) => count > 1)
+                .map(([char, count]) => `${char}: ${count}`)
+                .join(', ');
+        }
+
+        function findNumberOfVowels() {
+            const inputArray = document.getElementById('input').value;
+            if (inputArray) {
+                const array = inputArray.split(',');
+                const vowels = ['a', 'e', 'i', 'o', 'u'];
+                const vowelCount = array.reduce((count, char) => vowels.includes(char.toLowerCase()) ? count + 1 : count, 0);
+
+                displayResult(`Number of vowels: ${vowelCount}`);
+            } else {
+                displayResult("No array entered.");
+            }
+        }
+
+        function findLongestWord() {
+            const inputString = document.getElementById('input').value;
+            if (inputString) {
+                const words = inputString.split(' ');
+                const longestWord = words.reduce((longest, current) => current.length > longest.length ? current : longest, '');
+
+                displayResult(`The longest word is: ${longestWord}`);
+            } else {
+                displayResult("No string entered.");
+            }
+        }
+
+        function toggleCase() {
+            const inputString = document.getElementById('input').value;
+            if (inputString) {
+                const toggledString = [...inputString].map(char => char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase()).join('');
+
+                displayResult(`Toggled case: ${toggledString}`);
+            } else {
+                displayResult("No string entered.");
+            }
+        }
+
+        function findWordLocation() {
+            const inputString = document.getElementById('input').value;
+            const word = prompt("Enter the word to find in the string:");
+            if (inputString && word) {
+                const index = inputString.indexOf(word);
+                const resultText = index !== -1 ? `The word "${word}" is located at index: ${index}` : `The word "${word}" is not found in the string.`;
+
+                displayResult(resultText);
+            } else {
+                displayResult("No valid input entered.");
+            }
+        }
+
+        function spliceOperations() {
+            const inputArray = document.getElementById('input').value;
+            if (inputArray) {
+                let array = inputArray.split(',');
+
+                // Delete elements
+                array.splice(1, 2); // Deletes 2 elements starting from index 1
+
+                // Insert elements
+                array.splice(1, 0, 'new1', 'new2'); // Inserts 'new1' and 'new2' at index 1
+
+                // Replace elements
+                array.splice(3, 1, 'replace'); // Replaces 1 element at index 3 with 'replace'
+
+                displayResult(`Modified array: ${array.join(', ')}`);
+            } else {
+                displayResult("No array entered.");
+            }
+        }
+
+        function analyzeString() {
+            const inputString = document.getElementById('input').value;
+            if (inputString) {
+                const numWords = inputString.trim().split(/\s+/).length;
+                const numCharacters = inputString.length;
+                const numSpaces = (inputString.match(/\s/g) || []).length;
+                const numSpecialSymbols = (inputString.match(/[^\w\s]/g) || []).length;
+
+                displayResult(`Words: ${numWords}, Characters: ${numCharacters}, Spaces: ${numSpaces}, Special symbols: ${numSpecialSymbols}`);
+            } else {
+                displayResult("No string entered.");
+            }
+        }
+    </script>
+</body>
+</html>
+            
